@@ -216,3 +216,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# OmniVisionAI generated files
+static/uploads/
+static/results/
+
+# AI model files
+*.pt
+*.pth
+*.keras
+*.h5
+*.pkl
+*.joblib
+
+# Local datasets if large
+datasets/
