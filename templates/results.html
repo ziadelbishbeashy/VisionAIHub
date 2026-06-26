@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detection Results</title>
+</head>
+<body>
+    <h1>Detection Results</h1>
+
+    <h2>Detected Image</h2>
+    <img src="{{ result_image }}" width="600">
+
+    <h2>Object Counts</h2>
+    {% if counts %}
+        <ul>
+        {% for object, count in counts.items() %}
+            <li>{{ object }}: {{ count }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No target objects detected.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Try another image</a>
+</body>
+</html>
