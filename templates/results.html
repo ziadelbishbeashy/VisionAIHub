@@ -1,26 +1,243 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Detection Results</title>
+    <title>OmniVision AI Results</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Detection Results</h1>
 
-    <h2>Detected Image</h2>
-    <img src="{{ result_image }}" width="600">
+<div class="container">
 
-    <h2>Object Counts</h2>
-    {% if counts %}
-        <ul>
-        {% for object, count in counts.items() %}
-            <li>{{ object }}: {{ count }}</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No target objects detected.</p>
-    {% endif %}
+    <div class="topbar">
 
-    <br>
-    <a href="/">Try another image</a>
+        <div>
+            <h1>YOLO Detection Results</h1>
+            <p>
+                Analysis #{{ summary.analysis_id }}
+            </p>
+        </div>
+
+        <div>
+            <a href="/" class="secondary-btn">
+                New Analysis
+            </a>
+
+            <a href="/history" class="secondary-btn">
+                Detection History
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- MAIN STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span>Total Objects</span>
+            <h2>{{ summary.total_objects }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Total Vehicles</span>
+            <h2>{{ summary.total_vehicles }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Total People</span>
+            <h2>{{ summary.total_people }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Average Confidence</span>
+            <h2>{{ summary.avg_confidence }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Min Confidence</span>
+            <h2>{{ summary.min_confidence }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Max Confidence</span>
+            <h2>{{ summary.max_confidence }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Vehicle Density</span>
+            <h2>{{ summary.vehicle_density }}%</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Most Detected</span>
+            <h2>{{ summary.most_detected_object }}</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Processing Time</span>
+            <h2>{{ summary.processing_time }}s</h2>
+        </div>
+
+        <div class="stat-card">
+            <span>Traffic Level</span>
+            <h2 class="{{ summary.traffic_level|lower }}">
+                {{ summary.traffic_level }}
+            </h2>
+            <small>Rule-based</small>
+        </div>
+
+        <div class="stat-card">
+            <span>Risk Level</span>
+            <h2 class="{{ summary.risk_level|lower }}">
+                {{ summary.risk_level }}
+            </h2>
+            <small>Rule-based</small>
+        </div>
+
+    </div>
+
+
+    <!-- IMAGE + SUMMARY -->
+
+    <div class="result-section">
+
+        <div class="image-panel">
+
+            <h2>Detected Image</h2>
+
+            <img
+                src="/{{ summary.result_image }}"
+                class="result-img">
+
+        </div>
+
+
+        <div class="table-panel">
+
+            <h2>Detection Summary</h2>
+
+            <table>
+
+                <tr>
+                    <th>Object</th>
+                    <th>Count</th>
+                    <th>%</th>
+                </tr>
+
+                {% set total =
+                summary.total_objects
+                if summary.total_objects > 0
+                else 1 %}
+
+                <tr>
+                    <td>Persons</td>
+                    <td>{{ summary.persons }}</td>
+                    <td>
+                        {{
+                        ((summary.persons/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Cars</td>
+                    <td>{{ summary.cars }}</td>
+                    <td>
+                        {{
+                        ((summary.cars/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Buses</td>
+                    <td>{{ summary.buses }}</td>
+                    <td>
+                        {{
+                        ((summary.buses/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Trucks</td>
+                    <td>{{ summary.trucks }}</td>
+                    <td>
+                        {{
+                        ((summary.trucks/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Motorcycles</td>
+                    <td>{{ summary.motorcycles }}</td>
+                    <td>
+                        {{
+                        ((summary.motorcycles/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Bicycles</td>
+                    <td>{{ summary.bicycles }}</td>
+                    <td>
+                        {{
+                        ((summary.bicycles/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Traffic Lights</td>
+                    <td>{{ summary.traffic_lights }}</td>
+                    <td>
+                        {{
+                        ((summary.traffic_lights/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Stop Signs</td>
+                    <td>{{ summary.stop_signs }}</td>
+                    <td>
+                        {{
+                        ((summary.stop_signs/total)*100)
+                        | round(1)
+                        }}%
+                    </td>
+                </tr>
+
+            </table>
+
+            <br>
+
+            <a
+                href="/{{ summary.original_image }}"
+                target="_blank"
+                class="secondary-btn">
+
+                View Original Image
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
 </body>
 </html>
