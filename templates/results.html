@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        VisionAIHub Results
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- ==================================================
+         TOP BAR
+    =================================================== -->
+
+    <div class="topbar">
+
+        <div>
+            <span class="section-label">
+                ANALYSIS COMPLETE
+            </span>
+
+            <h1>
+                VisionAIHub Results
+            </h1>
+
+            <p>
+                Analysis #{{ summary.analysis_id }}
+            </p>
+        </div>
+
+
+        <div class="topbar-actions">
+
+            <a
+                href="/"
+                class="secondary-btn"
+            >
+                New Analysis
+            </a>
+
+            <a
+                href="/analytics"
+                class="secondary-btn"
+            >
+                Analytics
+            </a>
+
+            <a
+                href="/history"
+                class="secondary-btn"
+            >
+                History
+            </a>
+
+            <a
+                href="/about"
+                class="secondary-btn"
+            >
+                About
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         SELECTED ANALYSIS PIPELINE
+    =================================================== -->
+
+    <section class="selected-module-panel">
+
+        <div>
+            <span class="section-label">
+                SELECTED MODULES
+            </span>
+
+            <h2>
+                Analysis Pipeline
+            </h2>
+        </div>
+
+
+        <div class="selected-module-list">
+
+            {% if summary.show_detection %}
+
+            <span class="selected-module-chip">
+                YOLOv8 Detection
+            </span>
+
+            {% endif %}
+
+
+            {% if summary.traffic_selected %}
+
+            <span class="selected-module-chip">
+                Feature Engineering
+            </span>
+
+            <span class="selected-module-chip">
+                Random Forest Traffic ML
+            </span>
+
+            {% endif %}
+
+
+            {% if summary.weather_selected %}
+
+            <span class="selected-module-chip">
+                EfficientNetB0 Weather
+            </span>
+
+            {% endif %}
+
+
+            {% if summary.scene_selected %}
+
+            <span class="selected-module-chip">
+                Scene Transfer Learning
+            </span>
+
+            {% endif %}
+
+
+            <span class="selected-module-chip">
+                Gemini Assistant
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         IMAGE COMPARISON
+    =================================================== -->
+
+    <section class="image-comparison">
+
+        <div class="comparison-image-card">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="section-label">
+                        INPUT
+                    </span>
+
+                    <h2>
+                        Original Image
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <img
+                src="/{{ original_image }}"
+                class="result-img"
+                alt="Original uploaded image"
+            >
+
+        </div>
+
+
+        {% if summary.show_detection and result_image %}
+
+        <div class="comparison-image-card">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="section-label">
+                        COMPUTER VISION
+                    </span>
+
+                    <h2>
+                        YOLO Detection
+                    </h2>
+                </div>
+
+
+                <span class="model-pill">
+                    YOLOv8n
+                </span>
+
+            </div>
+
+
+            <img
+                src="/{{ result_image }}"
+                class="result-img"
+                alt="YOLO detection result"
+            >
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==================================================
+         MODEL PREDICTIONS
+    =================================================== -->
+
+    <section class="prediction-grid">
+
+        <!-- ==============================================
+             TRAFFIC MODEL
+        =============================================== -->
+
+        {% if summary.traffic_selected %}
+
+        <article
+            class="prediction-card traffic-prediction-card"
+        >
+
+            <div class="prediction-card-header">
+
+                <div>
+                    <span class="section-label">
+                        CLASSICAL MACHINE LEARNING
+                    </span>
+
+                    <h2>
+                        Traffic Density
+                    </h2>
+                </div>
+
+
+                <span class="model-pill">
+                    Random Forest
+                </span>
+
+            </div>
+
+
+            <div class="primary-prediction">
+
+                <span>
+                    Predicted Class
+                </span>
+
+                <strong
+                    class="{{ summary.ml_traffic_density|lower }}"
+                >
+                    {{ summary.ml_traffic_density }}
+                </strong>
+
+            </div>
+
+
+            {% if summary.ml_traffic_confidence is not none %}
+
+            <div class="prediction-confidence">
+
+                <span>
+                    Prediction Confidence
+                </span>
+
+                <strong>
+                    {{ summary.ml_traffic_confidence }}%
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if summary.ml_class_probabilities %}
+
+            <div class="probability-list">
+
+                {% for label, probability
+                    in summary.ml_class_probabilities.items()
+                %}
+
+                <div class="probability-item">
+
+                    <div class="probability-header">
+
+                        <span>
+                            {{ label }}
+                        </span>
+
+                        <strong>
+                            {{ probability }}%
+                        </strong>
+
+                    </div>
+
+
+                    <progress
+                        class="probability-progress"
+                        value="{{ probability }}"
+                        max="100"
+                    >
+                        {{ probability }}%
+                    </progress>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if summary.traffic_error %}
+
+            <p class="prediction-error">
+                {{ summary.traffic_error }}
+            </p>
+
+            {% endif %}
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Features used
+                </span>
+
+                <strong>
+                    25
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Independent test accuracy
+                </span>
+
+                <strong>
+                    72.81%
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Weighted F1
+                </span>
+
+                <strong>
+                    72.20%
+                </strong>
+
+            </div>
+
+        </article>
+
+        {% endif %}
+
+
+        <!-- ==============================================
+             WEATHER MODEL
+        =============================================== -->
+
+        {% if summary.weather_selected %}
+
+        <article
+            class="prediction-card weather-prediction-card"
+        >
+
+            <div class="prediction-card-header">
+
+                <div>
+                    <span class="section-label">
+                        TRANSFER LEARNING
+                    </span>
+
+                    <h2>
+                        Weather Condition
+                    </h2>
+                </div>
+
+
+                <span class="model-pill">
+                    EfficientNetB0
+                </span>
+
+            </div>
+
+
+            <div class="primary-prediction">
+
+                <span>
+                    Predicted Weather
+                </span>
+
+                <strong>
+                    {{ summary.weather_label }}
+                </strong>
+
+            </div>
+
+
+            {% if summary.weather_confidence is not none %}
+
+            <div class="prediction-confidence">
+
+                <span>
+                    Model Confidence
+                </span>
+
+                <strong>
+                    {{ summary.weather_confidence }}%
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if summary.weather_error %}
+
+            <p class="prediction-error">
+                {{ summary.weather_error }}
+            </p>
+
+            {% endif %}
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Input type
+                </span>
+
+                <strong>
+                    Complete image
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Technique
+                </span>
+
+                <strong>
+                    Transfer learning
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Classes
+                </span>
+
+                <strong>
+                    Cloudy, Foggy, Rainy, Sunny
+                </strong>
+
+            </div>
+
+        </article>
+
+        {% endif %}
+
+
+        <!-- ==============================================
+             SCENE MODEL
+        =============================================== -->
+
+        {% if summary.scene_selected %}
+
+        <article
+            class="prediction-card scene-prediction-card"
+        >
+
+            <div class="prediction-card-header">
+
+                <div>
+                    <span class="section-label">
+                        TRANSFER LEARNING
+                    </span>
+
+                    <h2>
+                        Scene Classification
+                    </h2>
+                </div>
+
+
+                <span class="model-pill">
+
+                    {{
+                        summary.scene_model_name
+                        or "Scene Model"
+                    }}
+
+                </span>
+
+            </div>
+
+
+            <div class="primary-prediction">
+
+                <span>
+                    Predicted Scene
+                </span>
+
+                <strong>
+                    {{ summary.scene_label }}
+                </strong>
+
+            </div>
+
+
+            {% if summary.scene_confidence is not none %}
+
+            <div class="prediction-confidence">
+
+                <span>
+                    Model Confidence
+                </span>
+
+                <strong>
+                    {{ summary.scene_confidence }}%
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if summary.scene_probabilities %}
+
+            <div class="probability-list">
+
+                {% for label, probability
+                    in summary.scene_probabilities.items()
+                %}
+
+                <div class="probability-item">
+
+                    <div class="probability-header">
+
+                        <span>
+                            {{ label }}
+                        </span>
+
+                        <strong>
+                            {{ probability }}%
+                        </strong>
+
+                    </div>
+
+
+                    <progress
+                        class="probability-progress scene-progress"
+                        value="{{ probability }}"
+                        max="100"
+                    >
+                        {{ probability }}%
+                    </progress>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if summary.scene_error %}
+
+            <p class="prediction-error">
+                {{ summary.scene_error }}
+            </p>
+
+            {% endif %}
+
+
+            {% if summary.scene_input_width %}
+
+            <div class="model-detail-row">
+
+                <span>
+                    Input size
+                </span>
+
+                <strong>
+                    {{ summary.scene_input_width }}
+                    ×
+                    {{ summary.scene_input_height }}
+                </strong>
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Input type
+                </span>
+
+                <strong>
+                    Complete image
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Number of classes
+                </span>
+
+                <strong>
+                    6
+                </strong>
+
+            </div>
+
+
+            <div class="model-detail-row">
+
+                <span>
+                    Classes
+                </span>
+
+                <strong>
+                    Buildings, Forest, Glacier,
+                    Mountain, Sea, Street
+                </strong>
+
+            </div>
+
+        </article>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ==================================================
+         YOLO OBJECT-DETECTION ANALYTICS
+    =================================================== -->
+
+    {% if summary.show_detection %}
+
+    <section class="detection-analytics">
+
+        <div class="section-heading-row">
+
+            <div>
+                <span class="section-label">
+                    OBJECT DETECTION ANALYTICS
+                </span>
+
+                <h2>
+                    YOLO Analysis Details
+                </h2>
+            </div>
+
+
+            <span class="model-pill">
+                Threshold {{ confidence }}
+            </span>
+
+        </div>
+
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <span>
+                    Total Objects
+                </span>
+
+                <h2>
+                    {{ summary.total_objects }}
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Total Vehicles
+                </span>
+
+                <h2>
+                    {{ summary.total_vehicles }}
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Total People
+                </span>
+
+                <h2>
+                    {{ summary.total_people }}
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Average Confidence
+                </span>
+
+                <h2>
+                    {{
+                        (
+                            summary.avg_confidence
+                            * 100
+                        ) | round(1)
+                    }}%
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Vehicle Share
+                </span>
+
+                <h2>
+                    {{ summary.vehicle_density }}%
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Vehicle Occupancy
+                </span>
+
+                <h2>
+                    {{
+                        (
+                            summary.vehicle_occupancy
+                            * 100
+                        ) | round(2)
+                    }}%
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Most Detected
+                </span>
+
+                <h2>
+                    {{ summary.most_detected_object }}
+                </h2>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Processing Time
+                </span>
+
+                <h2>
+                    {{ summary.processing_time }}s
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-panel full-width-table">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>
+                            Object
+                        </th>
+
+                        <th>
+                            Count
+                        </th>
+
+                        <th>
+                            Share
+                        </th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% set total =
+                    summary.total_objects
+                    if summary.total_objects > 0
+                    else 1
+                %}
+
+
+                {% set object_rows = [
+                    ("Persons", summary.persons),
+                    ("Cars", summary.cars),
+                    ("Buses", summary.buses),
+                    ("Trucks", summary.trucks),
+                    (
+                        "Motorcycles",
+                        summary.motorcycles
+                    ),
+                    (
+                        "Bicycles",
+                        summary.bicycles
+                    ),
+                    (
+                        "Traffic Lights",
+                        summary.traffic_lights
+                    ),
+                    (
+                        "Stop Signs",
+                        summary.stop_signs
+                    )
+                ] %}
+
+
+                {% for object_name, object_count
+                    in object_rows
+                %}
+
+                <tr>
+
+                    <td>
+                        {{ object_name }}
+                    </td>
+
+                    <td>
+                        {{ object_count }}
+                    </td>
+
+                    <td>
+                        {{
+                            (
+                                object_count
+                                / total
+                                * 100
+                            ) | round(1)
+                        }}%
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- ==================================================
+         GEMINI CONTEXT-AWARE ASSISTANT
+    =================================================== -->
+
+    <section class="assistant-panel">
+
+        <div class="assistant-header">
+
+            <div class="assistant-icon">
+                AI
+            </div>
+
+
+            <div>
+
+                <span class="section-label">
+                    GEMINI CONTEXT-AWARE ASSISTANT
+                </span>
+
+                <h2>
+                    Ask About Any Analysis Result
+                </h2>
+
+                <p>
+                    Ask about detected objects, people,
+                    vehicles, traffic density, weather,
+                    scene classification, confidence values,
+                    or the complete image analysis.
+                </p>
+
+            </div>
+
+
+            <div class="assistant-status">
+
+                <span class="status-dot"></span>
+
+                <span id="analysis-assistant-status">
+                    Ready
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Suggested questions -->
+
+        <div class="suggestion-row">
+
+            <button
+                type="button"
+                class="suggestion-btn analysis-suggestion"
+                data-question="Summarize the complete image analysis."
+            >
+                Complete Summary
+            </button>
+
+
+            {% if summary.show_detection %}
+
+            <button
+                type="button"
+                class="suggestion-btn analysis-suggestion"
+                data-question="What objects were detected in the image?"
+            >
+                Detected Objects
+            </button>
+
+            {% endif %}
+
+
+            {% if summary.traffic_selected %}
+
+            <button
+                type="button"
+                class="suggestion-btn analysis-suggestion"
+                data-question="Explain the traffic prediction and its confidence."
+            >
+                Traffic Analysis
+            </button>
+
+            {% endif %}
+
+
+            {% if summary.weather_selected %}
+
+            <button
+                type="button"
+                class="suggestion-btn analysis-suggestion"
+                data-question="Explain the weather prediction and its confidence."
+            >
+                Weather Analysis
+            </button>
+
+            {% endif %}
+
+
+            {% if summary.scene_selected %}
+
+            <button
+                type="button"
+                class="suggestion-btn analysis-suggestion"
+                data-question="Explain the scene prediction and its confidence."
+            >
+                Scene Analysis
+            </button>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Chat messages -->
+
+        <div
+            id="analysis-chat"
+            class="analysis-chat"
+        >
+
+            <div class="chat-message assistant-message">
+
+                <div class="message-label">
+                    Gemini Assistant
+                </div>
+
+                <p>
+                    Your selected analysis is ready.
+                    Ask me anything about the available results.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Question form -->
+
+        <form
+            id="analysis-question-form"
+            class="assistant-form"
+        >
+
+            <input
+                id="analysis-question"
+                type="text"
+                placeholder="Ask about any analysis result..."
+                autocomplete="off"
+                required
+            >
+
+            <button
+                id="analysis-send-button"
+                type="submit"
+            >
+                Ask Gemini
+            </button>
+
+        </form>
+
+
+        <p
+            id="analysis-assistant-error"
+            class="assistant-error"
+            aria-live="polite"
+        ></p>
+
+    </section>
+
+</div>
+
+
+<!-- The complete assistant logic is inside main.js.
+     Do not add another assistant script here. -->
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+</body>
+</html>

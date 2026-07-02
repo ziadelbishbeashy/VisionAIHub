@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detection History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Detection History</h1>
+    <p>Latest saved detection records from YOLO analysis.</p>
+
+    <a href="/" class="secondary-btn">Back to Upload</a>
+
+    {% if records %}
+    <div class="history-table-wrapper">
+        <table>
+            <tr>
+                <th>Preview</th>
+                <th>Date</th>
+                <th>Filename</th>
+                <th>Persons</th>
+                <th>Cars</th>
+                <th>Buses</th>
+                <th>Trucks</th>
+                <th>Motorcycles</th>
+                <th>Bicycles</th>
+                <th>Traffic</th>
+                <th>Risk</th>
+                <th>Confidence</th>
+                <th>Action</th>
+            </tr>
+
+            {% for row in records %}
+            <tr>
+                <td>
+                    <img src="{{ row.result_image }}" class="history-thumb">
+                </td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.filename }}</td>
+                <td>{{ row.persons }}</td>
+                <td>{{ row.cars }}</td>
+                <td>{{ row.buses }}</td>
+                <td>{{ row.trucks }}</td>
+                <td>{{ row.motorcycles }}</td>
+                <td>{{ row.bicycles }}</td>
+                <td class="{{ row.traffic_level|lower }}">{{ row.traffic_level }}</td>
+                <td class="{{ row.risk_level|lower }}">{{ row.risk_level }}</td>
+                <td>{{ row.avg_confidence }}</td>
+                <td>
+                    <a href="{{ row.result_image }}" target="_blank" class="view-btn">
+                        View Image
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% else %}
+        <div class="empty-box">
+            <h2>No detection history yet</h2>
+            <p>Upload and analyze an image first, then come back here.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

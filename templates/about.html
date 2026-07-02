@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About VisionAIHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+<div class="page">
+
+    <nav class="navbar">
+        <div class="logo">VisionAIHub</div>
+
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/analytics">Analytics</a>
+            <a href="/history">History</a>
+            <a href="/about" class="active">About</a>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div>
+            <span class="badge">MULTI-MODEL VISUAL INTELLIGENCE</span>
+            <h1>About VisionAIHub</h1>
+            <p>
+                VisionAIHub is a modular AI web application that combines
+                computer vision, classical machine learning, transfer learning,
+                and a Gemini-powered assistant to analyze road and outdoor images.
+            </p>
+        </div>
+
+        <div class="about-highlight-card">
+            <span class="section-label">PROJECT GOAL</span>
+            <h2>One image. Multiple AI insights.</h2>
+            <p>
+                The platform replaces separate tools with one connected workflow
+                for object detection, traffic analysis, weather recognition,
+                scene understanding, and natural-language explanation.
+            </p>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-heading-center">
+            <span class="section-label">CORE MODULES</span>
+            <h2>How the platform analyzes an image</h2>
+            <p>Each module performs a different technical role.</p>
+        </div>
+
+        <div class="about-module-grid">
+            <article class="about-module-card">
+                <span>01</span>
+                <h3>YOLOv8 Detection</h3>
+                <p>
+                    Detects and counts people, vehicles, traffic lights,
+                    stop signs, and other supported road objects.
+                </p>
+            </article>
+
+            <article class="about-module-card">
+                <span>02</span>
+                <h3>Feature Engineering</h3>
+                <p>
+                    Converts YOLO detections into 25 numerical features,
+                    including density, occupancy, ratios, and confidence statistics.
+                </p>
+            </article>
+
+            <article class="about-module-card">
+                <span>03</span>
+                <h3>Traffic ML</h3>
+                <p>
+                    A Random Forest classifier predicts Low, Medium, or High
+                    traffic density from the engineered features.
+                </p>
+            </article>
+
+            <article class="about-module-card">
+                <span>04</span>
+                <h3>Weather Classification</h3>
+                <p>
+                    EfficientNetB0 classifies the image as Cloudy, Foggy,
+                    Rainy, or Sunny.
+                </p>
+            </article>
+
+            <article class="about-module-card">
+                <span>05</span>
+                <h3>Scene Classification</h3>
+                <p>
+                    A transfer-learning model classifies the environment as
+                    Buildings, Forest, Glacier, Mountain, Sea, or Street.
+                </p>
+            </article>
+
+            <article class="about-module-card">
+                <span>06</span>
+                <h3>Gemini Assistant</h3>
+                <p>
+                    Converts structured model outputs into grounded explanations
+                    and answers user questions about the analysis.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-heading-row">
+            <div>
+                <span class="section-label">SYSTEM WORKFLOW</span>
+                <h2>From upload to explanation</h2>
+            </div>
+        </div>
+
+        <div class="workflow-strip">
+            <div><strong>1</strong><span>Upload image</span></div>
+            <div><strong>2</strong><span>Select modules</span></div>
+            <div><strong>3</strong><span>Run AI models</span></div>
+            <div><strong>4</strong><span>Aggregate outputs</span></div>
+            <div><strong>5</strong><span>Display charts</span></div>
+            <div><strong>6</strong><span>Ask Gemini</span></div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-heading-center">
+            <span class="section-label">TECHNOLOGY STACK</span>
+            <h2>Tools used to build VisionAIHub</h2>
+        </div>
+
+        <div class="technology-grid">
+            <article>
+                <h3>Frontend</h3>
+                <p>HTML5, CSS3, JavaScript, Jinja2, Chart.js</p>
+            </article>
+
+            <article>
+                <h3>Backend</h3>
+                <p>Python, Flask, Werkzeug, Flask sessions</p>
+            </article>
+
+            <article>
+                <h3>AI & ML</h3>
+                <p>YOLOv8, TensorFlow, Keras, Scikit-learn, EfficientNetB0</p>
+            </article>
+
+            <article>
+                <h3>Assistant</h3>
+                <p>Google Gemini API with grounded structured context</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-heading-center">
+            <span class="section-label">TEAM</span>
+            <h2>Project contributors</h2>
+        </div>
+
+        <div class="team-grid">
+            <article class="team-card">
+                <div class="team-avatar">ZE</div>
+                <h3>Ziad Elbishbeashy</h3>
+                <p>VisionAIHub Team</p>
+            </article>
+
+            <article class="team-card">
+                <div class="team-avatar">ND</div>
+                <h3>Nour Diaa</h3>
+                <p>VisionAIHub Team</p>
+            </article>
+
+            <article class="team-card">
+                <div class="team-avatar">MB</div>
+                <h3>Maya Bassem</h3>
+                <p>VisionAIHub Team</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="about-note">
+        <span class="section-label">IMPORTANT NOTE</span>
+        <p>
+            VisionAIHub provides AI-assisted image analysis. It should not replace
+            official traffic, weather, or safety systems.
+        </p>
+    </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+analysis_id,timestamp,selected_modules,persons,cars,buses,trucks,motorcycles,bicycles,traffic_lights,stop_signs,total_objects,total_vehicles,total_people,average_detection_confidence,processing_time,traffic_density,traffic_confidence,weather_label,weather_confidence,scene_label,scene_confidence
+40,2026-07-02T03:31:06,"detection,traffic,weather,scene",2,3,0,0,0,0,0,0,5,3,2,49.72,0.23,Low,86.17,Rainy,82.78,Street,84.13

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionAIHub Analytics</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<div class="page">
+
+    <nav class="navbar">
+        <div class="logo">VisionAIHub</div>
+
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/analytics" class="active">Analytics</a>
+            <a href="/history">History</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <section class="analytics-hero">
+        <div>
+            <span class="badge">VISUAL ANALYTICS DASHBOARD</span>
+            <h1>VisionAIHub Analytics</h1>
+            <p>
+                Explore cumulative statistics generated from saved image analyses,
+                model predictions, confidence values, and detected objects.
+            </p>
+        </div>
+
+        <div class="analytics-summary-badge">
+            <span>Total Analyses</span>
+            <strong>{{ analytics.total_analyses }}</strong>
+        </div>
+    </section>
+
+    {% if analytics.total_analyses == 0 %}
+
+    <section class="empty-analytics-state">
+        <span class="section-label">NO ANALYSES YET</span>
+        <h2>Run your first image analysis</h2>
+        <p>
+            Analytics will appear after VisionAIHub saves completed predictions
+            to the analysis history file.
+        </p>
+        <a href="/" class="run-analysis-button">Start New Analysis</a>
+    </section>
+
+    {% else %}
+
+    <section class="analytics-stats-grid">
+
+        <article class="analytics-stat-card">
+            <span>Total Analyses</span>
+            <strong>{{ analytics.total_analyses }}</strong>
+            <small>Saved image analyses</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Total Objects</span>
+            <strong>{{ analytics.total_objects }}</strong>
+            <small>Across all detection runs</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Total Vehicles</span>
+            <strong>{{ analytics.total_vehicles }}</strong>
+            <small>Cars, buses, trucks and more</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Average Objects</span>
+            <strong>{{ analytics.average_objects }}</strong>
+            <small>Per analyzed image</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Common Traffic</span>
+            <strong>{{ analytics.most_common_traffic }}</strong>
+            <small>Most frequent predicted class</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Common Weather</span>
+            <strong>{{ analytics.most_common_weather }}</strong>
+            <small>Most frequent weather class</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Common Scene</span>
+            <strong>{{ analytics.most_common_scene }}</strong>
+            <small>Most frequent scene class</small>
+        </article>
+
+        <article class="analytics-stat-card">
+            <span>Average Processing</span>
+            <strong>{{ analytics.average_processing_time }}s</strong>
+            <small>Mean processing time</small>
+        </article>
+
+    </section>
+
+    <section class="analytics-chart-grid">
+
+        <article class="analytics-chart-card analytics-chart-wide">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">TIME SERIES</span>
+                    <h2>Analyses Over Time</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="analyses-over-time-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">YOLOV8</span>
+                    <h2>Detected Objects</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="object-distribution-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">TRAFFIC ML</span>
+                    <h2>Traffic Distribution</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="traffic-distribution-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">WEATHER MODEL</span>
+                    <h2>Weather Distribution</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="weather-distribution-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">SCENE MODEL</span>
+                    <h2>Scene Distribution</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="scene-distribution-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">MODEL CONFIDENCE</span>
+                    <h2>Average Confidence</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="confidence-comparison-chart"></canvas>
+            </div>
+        </article>
+
+        <article class="analytics-chart-card">
+            <div class="chart-card-heading">
+                <div>
+                    <span class="section-label">OBJECT GROUPS</span>
+                    <h2>People vs Vehicles</h2>
+                </div>
+            </div>
+            <div class="analytics-chart-container">
+                <canvas id="people-vehicles-chart"></canvas>
+            </div>
+        </article>
+
+    </section>
+
+    {% endif %}
+
+</div>
+
+<script
+    id="analytics-data"
+    type="application/json"
+>
+    {{ analytics.chart_data | tojson }}
+</script>
+
+<script
+    src="{{ url_for('static', filename='js/analytics.js') }}"
+></script>
+
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+flask
+ultralytics
+opencv-python
+pandas
+numpy
+flask
+ultralytics
+opencv-python
+pandas
+numpy
+joblib
+scikit-learn
+google-genai

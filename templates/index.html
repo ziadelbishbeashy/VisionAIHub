@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VisionAIHub</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <nav class="navbar">
+
+        <div class="logo">
+            VisionAIHub
+        </div>
+
+        <div class="navbar-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/history">
+                History
+            </a>
+
+            <a href="/about">
+                About
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <section class="hero modular-hero">
+
+        <div class="hero-text">
+
+            <span class="badge">
+                Multi-Model Visual Intelligence
+            </span>
+
+            <h1>
+                Choose what the AI should analyze
+            </h1>
+
+            <p>
+                VisionAIHub combines object detection,
+                classical machine learning, transfer
+                learning, feature engineering and a
+                Gemini context-aware assistant in one
+                modular visual analytics platform.
+            </p>
+
+
+            <div class="hero-model-list">
+
+                <div>
+
+                    <strong>
+                        YOLOv8
+                    </strong>
+
+                    <span>
+                        Object detection
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Random Forest
+                    </strong>
+
+                    <span>
+                        Traffic classification
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        EfficientNetB0
+                    </strong>
+
+                    <span>
+                        Weather classification
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Scene Classifier
+                    </strong>
+
+                    <span>
+                        Six-class scene recognition
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="upload-card analysis-upload-card">
+
+            <div class="upload-card-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        NEW ANALYSIS
+                    </span>
+
+                    <h2>
+                        Configure Your Analysis
+                    </h2>
+
+                </div>
+
+
+                <span class="step-badge">
+                    3 steps
+                </span>
+
+            </div>
+
+
+            <form
+                id="analysis-form"
+                action="/predict"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <!-- STEP 1 -->
+
+                <div class="form-step">
+
+                    <div class="form-step-heading">
+
+                        <span>
+                            1
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Upload an image
+                            </strong>
+
+                            <small>
+                                JPG, JPEG, PNG, JFIF or WEBP
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label
+                        class="file-upload-box"
+                        for="image-input"
+                    >
+
+                        <span class="upload-symbol">
+                            +
+                        </span>
+
+                        <strong id="file-name">
+                            Choose an image
+                        </strong>
+
+                        <small>
+                            Click to browse your files
+                        </small>
+
+                    </label>
+
+
+                    <input
+                        id="image-input"
+                        class="hidden-file-input"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- STEP 2 -->
+
+                <div class="form-step">
+
+                    <div class="form-step-heading">
+
+                        <span>
+                            2
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Select AI modules
+                            </strong>
+
+                            <small>
+                                Choose one or multiple analyses
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="preset-row">
+
+                        <button
+                            type="button"
+                            class="preset-button"
+                            data-preset="all"
+                        >
+                            Full Analysis
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="preset-button"
+                            data-preset="traffic"
+                        >
+                            Traffic Only
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="preset-button"
+                            data-preset="weather"
+                        >
+                            Weather Only
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="preset-button"
+                            data-preset="scene"
+                        >
+                            Scene Only
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="preset-button"
+                            data-preset="detection"
+                        >
+                            Detection Only
+                        </button>
+
+                    </div>
+
+
+                    <div class="analysis-options">
+
+                        <!-- YOLO -->
+
+                        <label class="analysis-option selected">
+
+                            <input
+                                type="checkbox"
+                                name="analysis_types"
+                                value="detection"
+                                checked
+                            >
+
+                            <span class="analysis-option-icon">
+                                CV
+                            </span>
+
+                            <span class="analysis-option-content">
+
+                                <strong>
+                                    Object Detection
+                                </strong>
+
+                                <small>
+                                    Detect people, cars, buses,
+                                    trucks, motorcycles, bicycles,
+                                    traffic lights and stop signs
+                                    using YOLOv8.
+                                </small>
+
+                                <em>
+                                    Computer Vision · Deep Learning
+                                </em>
+
+                            </span>
+
+                            <span class="selection-indicator">
+                                ✓
+                            </span>
+
+                        </label>
+
+
+                        <!-- TRAFFIC ML -->
+
+                        <label class="analysis-option selected">
+
+                            <input
+                                type="checkbox"
+                                name="analysis_types"
+                                value="traffic"
+                                checked
+                            >
+
+                            <span class="analysis-option-icon">
+                                ML
+                            </span>
+
+                            <span class="analysis-option-content">
+
+                                <strong>
+                                    Traffic Intelligence
+                                </strong>
+
+                                <small>
+                                    Classify traffic density as
+                                    Low, Medium or High using
+                                    YOLO-derived features and a
+                                    trained Random Forest.
+                                </small>
+
+                                <em>
+                                    Classical ML · 25 features
+                                </em>
+
+                            </span>
+
+                            <span class="selection-indicator">
+                                ✓
+                            </span>
+
+                        </label>
+
+
+                        <!-- WEATHER -->
+
+                        <label class="analysis-option">
+
+                            <input
+                                type="checkbox"
+                                name="analysis_types"
+                                value="weather"
+                            >
+
+                            <span class="analysis-option-icon">
+                                TL
+                            </span>
+
+                            <span class="analysis-option-content">
+
+                                <strong>
+                                    Weather Classification
+                                </strong>
+
+                                <small>
+                                    Analyze the complete image
+                                    and classify its weather
+                                    condition using transfer learning.
+                                </small>
+
+                                <em>
+                                    EfficientNetB0 · Transfer Learning
+                                </em>
+
+                            </span>
+
+                            <span class="selection-indicator">
+                                ✓
+                            </span>
+
+                        </label>
+
+
+                        <!-- SCENE -->
+
+                        <label class="analysis-option">
+
+                            <input
+                                type="checkbox"
+                                name="analysis_types"
+                                value="scene"
+                            >
+
+                            <span class="analysis-option-icon">
+                                SC
+                            </span>
+
+                            <span class="analysis-option-content">
+
+                                <strong>
+                                    Scene Classification
+                                </strong>
+
+                                <small>
+                                    Classify the full environment
+                                    as buildings, forest, glacier,
+                                    mountain, sea or street.
+                                </small>
+
+                                <em>
+                                    Transfer Learning · 6 classes
+                                </em>
+
+                            </span>
+
+                            <span class="selection-indicator">
+                                ✓
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <p class="dependency-note">
+                        Traffic Intelligence automatically runs
+                        YOLO object detection because the Random
+                        Forest requires YOLO-derived features.
+                    </p>
+
+
+                    <p
+                        id="module-error"
+                        class="module-error"
+                    ></p>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div
+                    id="confidence-section"
+                    class="form-step"
+                >
+
+                    <div class="form-step-heading">
+
+                        <span>
+                            3
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Detection settings
+                            </strong>
+
+                            <small>
+                                Used by YOLO and Traffic Intelligence
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <label for="confidence">
+                        YOLO Confidence Threshold
+                    </label>
+
+
+                    <select
+                        id="confidence"
+                        name="confidence"
+                    >
+
+                        <option value="0.25">
+                            0.25 — More detections
+                        </option>
+
+                        <option
+                            value="0.35"
+                            selected
+                        >
+                            0.35 — Traffic ML recommended
+                        </option>
+
+                        <option value="0.50">
+                            0.50 — Strict
+                        </option>
+
+                        <option value="0.70">
+                            0.70 — High confidence only
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="run-analysis-button"
+                    type="submit"
+                >
+                    Run Selected Analysis
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <section class="platform-section">
+
+        <div class="section-heading-center">
+
+            <span class="section-label">
+                COMPLETE AI PIPELINE
+            </span>
+
+            <h2>
+                More than an object-detection website
+            </h2>
+
+            <p>
+                Each module uses a different artificial
+                intelligence technique. Gemini then explains
+                the available results using the combined
+                analysis context.
+            </p>
+
+        </div>
+
+
+        <div class="platform-grid">
+
+            <article class="platform-card">
+
+                <span>
+                    01
+                </span>
+
+                <h3>
+                    YOLOv8 Detection
+                </h3>
+
+                <p>
+                    Locates and counts people, vehicles
+                    and smart-city road objects.
+                </p>
+
+            </article>
+
+
+            <article class="platform-card">
+
+                <span>
+                    02
+                </span>
+
+                <h3>
+                    Feature Engineering
+                </h3>
+
+                <p>
+                    Converts detections into occupancy,
+                    density, ratio and traffic-complexity
+                    features.
+                </p>
+
+            </article>
+
+
+            <article class="platform-card">
+
+                <span>
+                    03
+                </span>
+
+                <h3>
+                    Traffic ML
+                </h3>
+
+                <p>
+                    A trained Random Forest predicts
+                    Low, Medium or High traffic density.
+                </p>
+
+            </article>
+
+
+            <article class="platform-card">
+
+                <span>
+                    04
+                </span>
+
+                <h3>
+                    Scene Understanding
+                </h3>
+
+                <p>
+                    A transfer-learning model classifies
+                    the complete environmental scene.
+                </p>
+
+            </article>
+
+
+            <article class="platform-card">
+
+                <span>
+                    05
+                </span>
+
+                <h3>
+                    Weather Intelligence
+                </h3>
+
+                <p>
+                    EfficientNetB0 predicts the weather
+                    condition from the complete image.
+                </p>
+
+            </article>
+
+
+            <article class="platform-card">
+
+                <span>
+                    06
+                </span>
+
+                <h3>
+                    Gemini Assistant
+                </h3>
+
+                <p>
+                    Explains detections, traffic, weather,
+                    scene predictions and confidence values
+                    using the available analysis context.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- Loading overlay -->
+
+<div
+    id="loading-overlay"
+    class="loading-overlay"
+    aria-hidden="true"
+>
+
+    <div class="loading-card">
+
+        <div class="loading-animation">
+
+            <div class="loading-orbit orbit-one"></div>
+
+            <div class="loading-orbit orbit-two"></div>
+
+            <div class="loading-core">
+                AI
+            </div>
+
+        </div>
+
+
+        <span class="section-label">
+            VISIONAIHUB PROCESSING
+        </span>
+
+        <h2>
+            Analyzing Your Image
+        </h2>
+
+        <p id="loading-stage">
+            Preparing image...
+        </p>
+
+
+        <div class="loading-progress-track">
+
+            <div
+                id="loading-progress-bar"
+                class="loading-progress-bar"
+            ></div>
+
+        </div>
+
+
+        <div class="loading-progress-details">
+
+            <span id="loading-module">
+                Initializing models
+            </span>
+
+            <strong id="loading-percentage">
+                5%
+            </strong>
+
+        </div>
+
+
+        <div class="loading-models">
+
+            <span id="loading-yolo">
+                YOLOv8
+            </span>
+
+            <span id="loading-traffic">
+                Random Forest
+            </span>
+
+            <span id="loading-weather">
+                Weather Model
+            </span>
+
+            <span id="loading-scene">
+                Scene Model
+            </span>
+
+        </div>
+
+
+        <small class="loading-message">
+            Processing time depends on the selected modules
+            and your computer performance.
+        </small>
+
+    </div>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+</body>
+</html>
